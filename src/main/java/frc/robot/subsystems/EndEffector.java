@@ -4,10 +4,10 @@ import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class EndEffector extends SubsystemBase {
-    private final CANSparkMax leftMotor = new CANSparkMax(1, CANSparkMax.MotorType.kBrushed);//filler motor id
-    private final CANSparkMax rightMotor = new CANSparkMax(2, CANSparkMax.MotorType.kBrushed);//filler motor id
+    private final CANSparkMax leftMotor = new CANSparkMax(59, CANSparkMax.MotorType.kBrushed);
+    private final CANSparkMax rightMotor = new CANSparkMax(26, CANSparkMax.MotorType.kBrushed);
 
-    //private double targetSpeed;
+    private boolean hasBall;
 
     public EndEffector() {
         this.setName("End Effector");
@@ -23,14 +23,14 @@ public class EndEffector extends SubsystemBase {
     }
 
     public void periodic() {
-        //if there is no ball in the endeffector
-            this.startIntake(4);//filler value for speed
-        //else if ball is in the endeffector
-            this.brake();
-        //else if the driver presses shoot button
-            this.startOutput(4);//filler value for speed
+        if (leftMotor.getOutputCurrent() > 13 && rightMotor.getOutputCurrent() > 13)
+            hasBall = true;
 
-            //will need to somehow detect when ball enters/leaves, which will be able to make the endeffector brake or startIntake again
+        if (!hasBall)
+            this.startIntake(0.25);
+
+        else
+            this.brake();
     }
 
     public void startIntake(double speed) {
@@ -46,5 +46,9 @@ public class EndEffector extends SubsystemBase {
     public void startOutput(double speed) {
         this.leftMotor.set(-speed);
         this.rightMotor.set(-speed);
+    }
+
+    public void setBall(boolean b) {
+        this.hasBall = b;
     }
 }

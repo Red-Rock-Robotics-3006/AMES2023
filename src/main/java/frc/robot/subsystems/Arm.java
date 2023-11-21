@@ -31,4 +31,6 @@ public class Arm extends SubsystemBase{
         //if not homing
             //default to REST_ANGLE
     }
+
+    
 }
