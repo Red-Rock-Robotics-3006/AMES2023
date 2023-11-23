@@ -14,6 +14,39 @@ package frc.robot;
  */
 public final class Constants {
   public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0;
+    public static int DRIVER_CONTROLLER_PORT = 0;
+    public static int MECH_STICK_PORT = 1;
+    public static int STRAFE_AXIS = 0;
+    public static int FORWARD_AXIS = 1;
+    public static int TURN_AXIS = 4;
+    public static int BUTTON_Y = 4;
+  }
+
+  public static class Drive{
+    //motor ids
+    public static final int FL_TURN_MOTOR_ID = 0;
+    public static final int FL_DRIVE_MOTOR_ID = 0;
+    public static final int FL_CCODER_ID = 0;
+
+    public static final int FR_TURN_MOTOR_ID = 0;
+    public static final int FR_DRIVE_MOTOR_ID = 0;
+    public static final int FR_CCODER_ID = 0;
+
+    public static final int BL_TURN_MOTOR_ID = 0;
+    public static final int BL_DRIVE_MOTOR_ID = 0;
+    public static final int BL_CCODER_ID = 0;
+
+    public static final int BR_TURN_MOTOR_ID = 0;
+    public static final int BR_DRIVE_MOTOR_ID = 0;
+    public static final int BR_CCODER_ID = 0;
+  }
+
+  public class Arm{
+    public static final int MOTOR_ID = 1;
+  }
+
+  public class EndEffector{
+    public static final int LEFT_MOTOR_ID = 59;
+    public static final int RIGHT_MOTOR_ID = 26;
   }
 }

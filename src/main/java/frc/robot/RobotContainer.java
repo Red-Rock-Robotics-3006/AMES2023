@@ -5,13 +5,11 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.SetIntakeCommand;
 import frc.robot.commands.SetIntakeWaitCommand;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.scoring.ArmSubsystem;
 import frc.robot.subsystems.scoring.EndEffectorSubsystem;
+import frc.robot.subsystems.swerve.Drivetrain;
+import frc.robot.subsystems.swerve.Gyroscope;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -32,10 +30,14 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 public class RobotContainer {
   private final CommandXboxController mechStick = new CommandXboxController(1);
   private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+      new CommandXboxController(OperatorConstants.DRIVER_CONTROLLER_PORT);
 
   private EndEffectorSubsystem m_endEffector = EndEffectorSubsystem.getInstance();
   private ArmSubsystem m_arm = ArmSubsystem.getInstance();
+  private Drivetrain m_swerve = Drivetrain.getInstance();
+
+  private Command driveCommand = null;
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -53,6 +55,47 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+
+    m_driverController.y().onTrue(new InstantCommand(() -> Gyroscope.getPigeonInstance().setYaw(0)));
+
+    
+
+    m_driverController.rightBumper()
+    .onTrue(new InstantCommand(() -> {
+      RunCommand dc = new RunCommand(
+        () -> m_swerve.drive(
+          m_driverController.getRawAxis(OperatorConstants.STRAFE_AXIS)*4, 
+          m_driverController.getRawAxis(OperatorConstants.FORWARD_AXIS)*4, 
+          Math.pow(m_driverController.getRawAxis(OperatorConstants.TURN_AXIS),3)*2,
+          false
+        ),
+        m_swerve
+      );
+      dc.setName("Joystick Control");
+
+      this.driveCommand = dc;
+      m_swerve.getDefaultCommand().cancel();
+      m_swerve.setDefaultCommand(dc);
+    }))
+    .onFalse(new InstantCommand(() -> {
+      RunCommand dc = new RunCommand(
+        () -> m_swerve.drive(
+          m_driverController.getRawAxis(OperatorConstants.STRAFE_AXIS)*4, 
+          m_driverController.getRawAxis(OperatorConstants.FORWARD_AXIS)*4, 
+          Math.pow(m_driverController.getRawAxis(OperatorConstants.TURN_AXIS),3)*100,
+          true
+        ),
+        m_swerve
+      );
+      dc.setName("Joystick Control");
+
+      this.driveCommand = dc;
+      m_swerve.getDefaultCommand().cancel();
+      m_swerve.setDefaultCommand(dc);
+    }));
+
+    //------------------------------------------------------------------------------------------------------------------
+
     /**
      * Note about intake commands
      * there are two different implementations of intake commands:
@@ -93,7 +136,7 @@ public class RobotContainer {
         () -> m_endEffector.startOutput(),
         () -> m_endEffector.brake(),
         m_arm
-      ).withTimeout(1)
+      ).withTimeout(EndEffectorSubsystem.OUTTAKE_SECONDS)
       );
 
     //score pos forward (press x)
@@ -109,7 +152,7 @@ public class RobotContainer {
       .onTrue(new SequentialCommandGroup(
         new InstantCommand(() -> m_arm.setIntakeForward(), m_arm),
         new InstantCommand(() -> m_endEffector.startIntake(), m_endEffector),
-        new WaitCommand(0.5),
+        new WaitCommand(EndEffectorSubsystem.SPIKE_SECONDS),
         new SetIntakeWaitCommand(m_endEffector, m_arm)
       ));
       
@@ -118,7 +161,7 @@ public class RobotContainer {
      .onTrue(new SequentialCommandGroup(
         new InstantCommand(() -> m_arm.setIntakeForward(), m_arm),
         new InstantCommand(() -> m_endEffector.startIntake(), m_endEffector),
-        new WaitCommand(0.5),
+        new WaitCommand(EndEffectorSubsystem.SPIKE_SECONDS),
         new SetIntakeWaitCommand(m_endEffector, m_arm)
         ));
     
@@ -126,6 +169,46 @@ public class RobotContainer {
     m_endEffector.setDefaultCommand(new RunCommand(() -> m_endEffector.brake(), m_endEffector));
     m_arm.setDefaultCommand(new RunCommand(() -> m_arm.stow(), m_arm));
 
+  }
+
+  public void enableControllers() {
+    if(m_swerve.getDefaultCommand() != null) m_swerve.getDefaultCommand().cancel();
+
+    RunCommand dc = new RunCommand(
+      () -> m_swerve.drive(
+        m_driverController.getRawAxis(0)*4, 
+        m_driverController.getRawAxis(1)*4, 
+        Math.pow(m_driverController.getRawAxis(2),3)*150,
+        true
+      ),
+      m_swerve
+    );
+    dc.setName("Joystick Control");
+
+    this.driveCommand = dc;
+    m_swerve.setDefaultCommand(dc);
+
+
+  }
+
+  public void disableControllers() {
+    if(this.driveCommand == null && this.driveCommand.getName().equals("Joystick Control")) {
+      this.driveCommand.cancel();
+      this.driveCommand = null;
+    }
+  }
+
+  public void zeroAllOutputs() {
+    if(m_swerve.getDefaultCommand() != null) m_swerve.getDefaultCommand().cancel();
+
+    RunCommand dc = new RunCommand(
+      () -> m_swerve.zeroWheels(),
+      m_swerve
+    );
+    dc.setName("Zeroing Control");
+
+    this.driveCommand = dc;
+    m_swerve.setDefaultCommand(dc);
   }
 
   /**

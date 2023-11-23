@@ -4,11 +4,12 @@ import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 @SuppressWarnings("unused")
 public class ArmSubsystem extends SubsystemBase{
     private static ArmSubsystem instance;
-    private final CANSparkMax armMotor = new CANSparkMax(1, CANSparkMax.MotorType.kBrushless);//filler motor id
+    private final CANSparkMax armMotor = new CANSparkMax(Constants.Arm.MOTOR_ID, CANSparkMax.MotorType.kBrushless);//filler motor id
     
     private static final double MAX_ANGLE = 1000;//-----
     private static final double MIN_ANGLE = -1000;
