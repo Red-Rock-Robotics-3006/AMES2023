@@ -18,6 +18,8 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import static frc.robot.Constants.Drive;
+
 /** Represents a swerve drive style drivetrain. */
 @SuppressWarnings("unused")
 public class Drivetrain extends SubsystemBase {
@@ -32,10 +34,10 @@ public class Drivetrain extends SubsystemBase {
   private final Translation2d m_backLeftLocation = new Translation2d(-0.381, 0.381);
   private final Translation2d m_backRightLocation = new Translation2d(0.381, 0.381);
 
-  private final SwerveModule m_frontRight = new SwerveModule(20, 6, 0, false); //m_frontLeft
-  private final SwerveModule m_backRight = new SwerveModule(11, 8, 41, true); //m_frontRight
-  private final SwerveModule m_frontLeft = new SwerveModule(4, 5, 44, false); //m_backLeft
-  private final SwerveModule m_backLeft = new SwerveModule(50, 3, 43, true); //m_backRight
+  private final SwerveModule m_frontLeft = new SwerveModule(Drive.FL_DRIVE_MOTOR_ID, Drive.FL_TURN_MOTOR_ID, Drive.FL_CCODER_ID, false); //m_frontLeft
+  private final SwerveModule m_frontRight = new SwerveModule(Drive.FR_DRIVE_MOTOR_ID, Drive.FR_TURN_MOTOR_ID, Drive.FR_CCODER_ID, true); //m_frontRight
+  private final SwerveModule m_backLeft = new SwerveModule(Drive.BL_DRIVE_MOTOR_ID, Drive.BL_TURN_MOTOR_ID, Drive.BL_CCODER_ID, false); //m_backLeft
+  private final SwerveModule m_backRight = new SwerveModule(Drive.BR_DRIVE_MOTOR_ID, Drive.BR_TURN_MOTOR_ID, Drive.BR_CCODER_ID, true); //m_backRight
 
   private final Pigeon2 m_gyro = Gyroscope.getPigeonInstance();
 
