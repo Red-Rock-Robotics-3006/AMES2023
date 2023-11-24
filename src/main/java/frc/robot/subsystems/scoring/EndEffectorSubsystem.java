@@ -2,7 +2,6 @@ package frc.robot.subsystems.scoring;
 
 import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 
 public class EndEffectorSubsystem extends SubsystemBase {
     public static double BALL_SPIKE_CURRENT = 11;
@@ -10,11 +9,8 @@ public class EndEffectorSubsystem extends SubsystemBase {
 
     public static double NORMAL_ACTIVE_SPEED = 0.25;
 
-    public static double SPIKE_SECONDS = 0.5;
-    public static double OUTTAKE_SECONDS = 1;
-
-    private final CANSparkMax leftMotor = new CANSparkMax(Constants.EndEffector.LEFT_MOTOR_ID, CANSparkMax.MotorType.kBrushed);
-    private final CANSparkMax rightMotor = new CANSparkMax(Constants.EndEffector.RIGHT_MOTOR_ID, CANSparkMax.MotorType.kBrushed);
+    private final CANSparkMax leftMotor = new CANSparkMax(59, CANSparkMax.MotorType.kBrushed);
+    private final CANSparkMax rightMotor = new CANSparkMax(26, CANSparkMax.MotorType.kBrushed);
 
 
     private static EndEffectorSubsystem instance;
