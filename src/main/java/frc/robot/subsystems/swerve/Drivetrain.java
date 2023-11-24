@@ -29,10 +29,13 @@ public class Drivetrain extends SubsystemBase {
   public static final double kMaxAngularSpeed = 2*Math.PI;
   public static final double kModuleMaxSpeed = 5.0;
 
-  private final Translation2d m_frontLeftLocation = new Translation2d(-0.381, -0.381);
-  private final Translation2d m_frontRightLocation = new Translation2d(0.381, -0.381);
-  private final Translation2d m_backLeftLocation = new Translation2d(-0.381, 0.381);
-  private final Translation2d m_backRightLocation = new Translation2d(0.381, 0.381);
+  public static final double BASE_WIDTH = 0.59055;
+  public static final double BASE_LENGTH = 0.59055;
+
+  private final Translation2d m_frontLeftLocation = new Translation2d((BASE_LENGTH / 2), BASE_WIDTH / 2);
+  private final Translation2d m_frontRightLocation = new Translation2d((BASE_LENGTH / 2), -(BASE_WIDTH / 2));
+  private final Translation2d m_backLeftLocation = new Translation2d(-(BASE_LENGTH / 2), BASE_WIDTH / 2);
+  private final Translation2d m_backRightLocation = new Translation2d(-(BASE_LENGTH / 2), -(BASE_WIDTH / 2));
 
   private final SwerveModule m_frontLeft = new SwerveModule(Drive.FL_DRIVE_MOTOR_ID, Drive.FL_TURN_MOTOR_ID, Drive.FL_CCODER_ID, false); //m_frontLeft
   private final SwerveModule m_frontRight = new SwerveModule(Drive.FR_DRIVE_MOTOR_ID, Drive.FR_TURN_MOTOR_ID, Drive.FR_CCODER_ID, true); //m_frontRight
