@@ -125,8 +125,8 @@ public class RobotContainer {
       .onTrue(new FunctionalCommand(
         () -> m_arm.setIntakeRear(),
         () -> m_endEffector.startIntake(),
-        (interrupted) -> m_arm.stow(),
-        () -> m_endEffector.hasBall(),
+        (interrupted) -> m_arm.stow(), // (interrupted) -> {m_arm.stow(); m_effector.brake();},
+        () -> m_endEffector.hasBall(), 
         m_arm, m_endEffector));
 
     

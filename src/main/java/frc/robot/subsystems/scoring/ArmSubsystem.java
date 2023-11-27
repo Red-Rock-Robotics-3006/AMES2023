@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMax;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.util.MechanismException;
 
 @SuppressWarnings("unused")
 public class ArmSubsystem extends SubsystemBase{
@@ -53,20 +54,21 @@ public class ArmSubsystem extends SubsystemBase{
 
     @Override
     public void periodic() {
-        //if not homing
-            //default to REST_ANGLE
-
-        //^ use a default command in robot container
-
         controller.setPID(kP, kI, kD);
 
         double feedforward = kF * Math.cos(Math.toDegrees(currentAngle)); // account for gravity: tourque = F * r * cos(theta) |  F * r is tunable kF term
+
 
         //TODO: pid code here, must be run every loop regardless
         
     }
 
     public void setTarget(double target){
+        //TODO:
+        // if (target > MAX_POS || target < MIN_POS){
+        //     throw new MechanismException("arm pos out of bounds");
+        // }
+
         //changes target for the pid
         //this method will be called every time an arm position change is desired
         this.target = target;
