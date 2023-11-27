@@ -13,8 +13,8 @@ public class EndEffectorSubsystem extends SubsystemBase {
     public static double SPIKE_SECONDS = 0.5;
     public static double OUTTAKE_SECONDS = 1;
 
-    private final CANSparkMax leftMotor = new CANSparkMax(Constants.EndEffector.LEFT_MOTOR_ID, CANSparkMax.MotorType.kBrushed);
-    private final CANSparkMax rightMotor = new CANSparkMax(Constants.EndEffector.RIGHT_MOTOR_ID, CANSparkMax.MotorType.kBrushed);
+    private final CANSparkMax leftMotor = new CANSparkMax(Constants.EndEffector.LEFT_MOTOR_ID, CANSparkMax.MotorType.kBrushless);
+    private final CANSparkMax rightMotor = new CANSparkMax(Constants.EndEffector.RIGHT_MOTOR_ID, CANSparkMax.MotorType.kBrushless);
 
 
     private static EndEffectorSubsystem instance;
