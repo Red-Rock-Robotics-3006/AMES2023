@@ -32,9 +32,6 @@ public class EndEffectorSubsystem extends SubsystemBase {
         this.rightMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
     }
 
-    public void periodic() {
-
-    }
 
     public void startIntake(double speed) {
         this.leftMotor.set(speed);
