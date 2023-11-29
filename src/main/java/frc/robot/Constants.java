@@ -22,8 +22,8 @@ public final class Constants {
   public class Arm {
     public static final int MOTOR_ID = 1;//-----
     public static final int TICKS_PER_DEGREE = 0;
-    public static final double MAX_ANGLE = 1000;
-    public static final double MIN_ANGLE = -1000;
+    public static final double MAX_ANGLE = 195;
+    public static final double MIN_ANGLE = -14;
     public static final double SCORE_ANGLE_F_L = 0;
     public static final double SCORE_ANGLE_R_L = 0;
     public static final double SCORE_ANGLE_F_H = 0;

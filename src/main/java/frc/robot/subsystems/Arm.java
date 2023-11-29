@@ -35,6 +35,7 @@ public class Arm extends SubsystemBase{
         this.armMotor.restoreFactoryDefaults();
         this.armMotor.setInverted(false);
         this.armMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        encoder.setPosition(Constants.Arm.MIN_ANGLE);
     }
 
     @Override
