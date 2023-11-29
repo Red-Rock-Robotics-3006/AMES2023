@@ -129,41 +129,41 @@ public class RobotContainer {
         () -> m_endEffector.hasBall(), 
         m_arm, m_endEffector));
 
+
+    //output angle low forward (press x)
+    mechStick.x()
+      .onTrue(new InstantCommand(
+        () -> m_arm.setOutputForwardL(),
+        m_arm));
+
+    //output angle low rear (press x and dpad_left)
+    mechStick.x().and(mechStick.povLeft())
+      .onTrue(new InstantCommand(
+        () -> m_arm.setOutputRearL(),
+        m_arm));
+
+    //output angle high forward (press b)
+    mechStick.b()
+      .onTrue(new InstantCommand(
+        () -> m_arm.setOutputForwardH(),
+        m_arm));
+
+    //output angle high rear (press b and dpad_left)
+    mechStick.x()
+      .onTrue(new InstantCommand(
+        () -> m_arm.setOutputRearH(),
+        m_arm));
+
     
     // outtake/shoot (press right bumper)
     mechStick.rightBumper()
       .onTrue(new StartEndCommand(
         () -> m_endEffector.startOutput(),
         () -> m_endEffector.brake(),
-        m_arm
-      ).withTimeout(EndEffectorSubsystem.OUTTAKE_SECONDS)
+        m_arm, m_endEffector
+      ).withTimeout(Constants.EndEffector.OUTTAKE_SECONDS)
       );
-
-    //score pos forward (press x)
-    mechStick.x()
-      .onTrue(new InstantCommand(() -> m_arm.setOutTakeForward(), m_arm));
-
-    //score pos rear (press x and dpad_left)
-    mechStick.x().and(mechStick.povLeft())
-      .onTrue(new InstantCommand(() -> m_arm.setOutTakeRear(), m_arm));
-    
-    //beta intake forward (press left bumper)
-    mechStick.leftBumper()
-      .onTrue(new SequentialCommandGroup(
-        new InstantCommand(() -> m_arm.setIntakeForward(), m_arm),
-        new InstantCommand(() -> m_endEffector.startIntake(), m_endEffector),
-        new WaitCommand(EndEffectorSubsystem.SPIKE_SECONDS),
-        new SetIntakeWaitCommand(m_endEffector, m_arm)
-      ));
       
-    //beta intake rear (press left bumper and dpad_left)
-    mechStick.leftBumper().and(mechStick.povLeft())
-     .onTrue(new SequentialCommandGroup(
-        new InstantCommand(() -> m_arm.setIntakeForward(), m_arm),
-        new InstantCommand(() -> m_endEffector.startIntake(), m_endEffector),
-        new WaitCommand(EndEffectorSubsystem.SPIKE_SECONDS),
-        new SetIntakeWaitCommand(m_endEffector, m_arm)
-        ));
     
     //default behavior to stow arm and brake intake
     m_endEffector.setDefaultCommand(new RunCommand(() -> m_endEffector.brake(), m_endEffector));
