@@ -17,6 +17,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.util.SmartDashboardWrapper;
 
 import static frc.robot.Constants.Drive;
 
@@ -29,10 +30,13 @@ public class Drivetrain extends SubsystemBase {
   public static final double kMaxAngularSpeed = 2*Math.PI;
   public static final double kModuleMaxSpeed = 5.0;
 
-  private final Translation2d m_frontLeftLocation = new Translation2d(-0.381, -0.381);
-  private final Translation2d m_frontRightLocation = new Translation2d(0.381, -0.381);
-  private final Translation2d m_backLeftLocation = new Translation2d(-0.381, 0.381);
-  private final Translation2d m_backRightLocation = new Translation2d(0.381, 0.381);
+  public static final double BASE_WIDTH = 0.59055;
+  public static final double BASE_LENGTH = 0.59055;
+
+  private final Translation2d m_frontLeftLocation = new Translation2d((BASE_LENGTH / 2), BASE_WIDTH / 2);
+  private final Translation2d m_frontRightLocation = new Translation2d((BASE_LENGTH / 2), -(BASE_WIDTH / 2));
+  private final Translation2d m_backLeftLocation = new Translation2d(-(BASE_LENGTH / 2), BASE_WIDTH / 2);
+  private final Translation2d m_backRightLocation = new Translation2d(-(BASE_LENGTH / 2), -(BASE_WIDTH / 2));
 
   private final SwerveModule m_frontLeft = new SwerveModule(Drive.FL_DRIVE_MOTOR_ID, Drive.FL_TURN_MOTOR_ID, Drive.FL_CCODER_ID, false); //m_frontLeft
   private final SwerveModule m_frontRight = new SwerveModule(Drive.FR_DRIVE_MOTOR_ID, Drive.FR_TURN_MOTOR_ID, Drive.FR_CCODER_ID, true); //m_frontRight
@@ -147,9 +151,27 @@ public class Drivetrain extends SubsystemBase {
   
   @Override
   public void periodic() {
-    updateOdometry();
+    // updateOdometry();
+    try{
+      this.updateOdometry();
+    } catch (NoSuchMethodError e){
+      SmartDashboardWrapper.createDashboardNumber("update odometry error", 10);
+    }
   }
 
   @Override 
   public void simulationPeriodic() {}
+
+  // non topher code
+  //---------------------------------------------------------------------------------------
+  
+  public void update(double strafe, double forward, double rot, double heading){
+    // pid
+    //TODO: move default drive code here, have drive bind to controller
+  }
+
+  public double[] configureInputs(double leftX, double leftY, double rot){
+    return new double[]{0,0,0}; //stub temp
+    //TODO: implement
+  }
 }

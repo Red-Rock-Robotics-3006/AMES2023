@@ -17,7 +17,7 @@ public class EndEffectorSubsystem extends SubsystemBase {
     private final CANSparkMax rightMotor = new CANSparkMax(Constants.EndEffector.RIGHT_MOTOR_ID, CANSparkMax.MotorType.kBrushless);
 
 
-    private static EndEffectorSubsystem instance;
+    private static EndEffectorSubsystem instance = null;
 
     private EndEffectorSubsystem() {
         this.setName("End Effector");
