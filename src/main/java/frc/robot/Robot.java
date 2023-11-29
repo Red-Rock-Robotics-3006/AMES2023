@@ -26,6 +26,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
@@ -62,11 +63,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     CommandScheduler.getInstance().cancelAll();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
-    }
+    if (m_autonomousCommand != null) CommandScheduler.getInstance().schedule(m_autonomousCommand);
   }
 
   /** This function is called periodically during autonomous. */
@@ -86,6 +83,14 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     System.out.println(Gyroscope.getPigeonInstance().getYaw());
+    try{
+      for (double d : m_robotContainer.getControllerInputs()){
+        System.out.print(d);
+      }
+      System.out.println();
+    } catch (Exception e){
+      System.out.println(e.getMessage());
+    }
   }
 
   @Override

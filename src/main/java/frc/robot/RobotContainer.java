@@ -64,9 +64,9 @@ public class RobotContainer {
     .onTrue(new InstantCommand(() -> {
       RunCommand dc = new RunCommand(
         () -> m_swerve.drive(
-          m_driverController.getRawAxis(OperatorConstants.STRAFE_AXIS)*4, 
-          m_driverController.getRawAxis(OperatorConstants.FORWARD_AXIS)*4, 
-          Math.pow(m_driverController.getRawAxis(OperatorConstants.TURN_AXIS),3)*2,
+          m_driverController.getLeftX()*4, 
+          m_driverController.getLeftY()*4, 
+          Math.pow(m_driverController.getRightX(),3)*2,
           false
         ),
         m_swerve
@@ -80,9 +80,9 @@ public class RobotContainer {
     .onFalse(new InstantCommand(() -> {
       RunCommand dc = new RunCommand(
         () -> m_swerve.drive(
-          m_driverController.getRawAxis(OperatorConstants.STRAFE_AXIS)*4, 
-          m_driverController.getRawAxis(OperatorConstants.FORWARD_AXIS)*4, 
-          Math.pow(m_driverController.getRawAxis(OperatorConstants.TURN_AXIS),3)*100,
+          m_driverController.getLeftX()*4, 
+          m_driverController.getLeftY()*4, 
+          Math.pow(m_driverController.getRightX(),3)*100,
           true
         ),
         m_swerve
@@ -210,6 +210,12 @@ public class RobotContainer {
     this.driveCommand = dc;
     m_swerve.setDefaultCommand(dc);
   }
+
+
+  public double[] getControllerInputs(){
+    return new double[]{m_driverController.getLeftX(), m_driverController.getLeftY(), m_driverController.getRightX()};
+  }
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

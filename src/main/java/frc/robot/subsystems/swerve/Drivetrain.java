@@ -17,6 +17,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.util.SmartDashboardWrapper;
 
 import static frc.robot.Constants.Drive;
 
@@ -150,7 +151,12 @@ public class Drivetrain extends SubsystemBase {
   
   @Override
   public void periodic() {
-    updateOdometry();
+    // updateOdometry();
+    try{
+      this.updateOdometry();
+    } catch (NoSuchMethodError e){
+      SmartDashboardWrapper.createDashboardNumber("update odometry error", 10);
+    }
   }
 
   @Override 
