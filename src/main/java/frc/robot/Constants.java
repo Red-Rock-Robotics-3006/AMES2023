@@ -21,6 +21,7 @@ public final class Constants {
 
   public class Arm {
     public static final int MOTOR_ID = 1;//-----
+    public static final int TICKS_PER_DEGREE = 0;
     public static final double MAX_ANGLE = 1000;
     public static final double MIN_ANGLE = -1000;
     public static final double SCORE_ANGLE_F_L = 0;
@@ -28,8 +29,8 @@ public final class Constants {
     public static final double SCORE_ANGLE_F_H = 0;
     public static final double SCORE_ANGLE_R_H = 0;
     public static final double INTAKE_ANGLE_F = 0;
-    public static final double INTAKE_ANGLE_R = 0;
-    public static final double REST_ANGLE = 0;//all values between these comments are filler angles and are to be adjusted during tuning
+    public static final double INTAKE_ANGLE_R = 0;//all values between these comments are filler angles and are to be adjusted during tuning
+    public static final double STOW_ANGLE = 90;
   }
 
   public class EndEffector {

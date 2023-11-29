@@ -1,31 +1,32 @@
 package frc.robot.subsystems;
-
-import com.revrobotics.CANSparkMax;
-
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class Arm extends SubsystemBase{
-    private static Arm instance;
-    private final CANSparkMax armMotor = new CANSparkMax(Constants.Arm.MOTOR_ID, CANSparkMax.MotorType.kBrushless);
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 
-    private static final double TICKS_PER_DEGREES = 1; // convert encoder ticks to a usable angle
+import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+public class Arm extends SubsystemBase{
+    private static Arm instance = null;
+    private final CANSparkMax armMotor = new CANSparkMax(Constants.Arm.MOTOR_ID, CANSparkMax.MotorType.kBrushless);
 
     private static double kP = 0;
     private static double kI = 0;
     private static double kD = 0;
     private static double kF = 0;
+    private static double kS = 0;
+    private static double kG = 0.33;
+    private static double kV = 1.95;
+    private static double kA = 0.02;
     
     private PIDController controller = new PIDController(kP, kI, kD);
+    private ArmFeedforward feedForward = new ArmFeedforward(kS, kG, kV, kA);
+    private RelativeEncoder encoder = armMotor.getEncoder();
 
-    //intended to be in degrees
-    private double currentAngle; //TODO: make this usable
-    // 0 = stow/upright position
-    // 90 = forward horizantal
-    // -90 = rear horizontal
-
-    private double target = 0;
+    private double currentAngle;
+    private double targetAngle = 0;
 
     private Arm() {
         this.setName("Arm");
@@ -39,14 +40,26 @@ public class Arm extends SubsystemBase{
     @Override
     public void periodic() {
         controller.setPID(kP, kI, kD);
+        currentAngle = this.getAngle();
+        double feedforward = feedForward.calculate(Math.toRadians(targetAngle), 6, 2);//kF * Math.abs(Math.cos(Math.toRadians(currentAngle))); // account for gravity: tourque =  r * F * cos(theta) |  r * F is tunable kF term
 
-        double feedforward = kF * Math.cos(Math.toDegrees(currentAngle)); // account for gravity: tourque =  r * F * cos(theta) |  r * F is tunable kF term
+        armMotor.set(controller.calculate(encoder.getPosition(), this.toTicks(currentAngle)) * feedforward);
+    }
 
-        //TODO: pid to target angle here, must be run every loop regardless yippe
+    public double getAngle() {
+        double angle;
+        double currentTick = encoder.getPosition();
+        angle = currentTick / Constants.Arm.TICKS_PER_DEGREE;
+        return angle;
+    }
+
+    public double toTicks(double angle) {
+        double ticks = angle * Constants.Arm.TICKS_PER_DEGREE;
+        return ticks;
     }
 
     public void setTarget(double t){
-        this.target = t;
+        this.targetAngle = t;
     }
 
     public void setOutputForwardL(){
@@ -75,7 +88,7 @@ public class Arm extends SubsystemBase{
 
     public void stow(){
         //TODO set as default command for this subsystem in RobotContainer
-        this.setTarget(Constants.Arm.REST_ANGLE);
+        this.setTarget(Constants.Arm.STOW_ANGLE);
     }
 
     public void setPIDF(double m_kP, double m_kI, double m_kD, double m_kF){

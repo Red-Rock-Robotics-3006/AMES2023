@@ -105,7 +105,7 @@ public class RobotContainer {
       .onTrue(new StartEndCommand(
         () -> m_endEffector.startOutput(),
         () -> m_endEffector.brake(),
-        m_arm
+        m_arm, m_endEffector
       ).withTimeout(Constants.EndEffector.OUTTAKE_SECONDS)
       );
       
