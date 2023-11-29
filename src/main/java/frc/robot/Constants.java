@@ -12,8 +12,33 @@ package frc.robot;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
+
+@SuppressWarnings("unused")
 public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+  }
+
+  public class Arm {
+    public static final int MOTOR_ID = 1;//-----
+    public static final double MAX_ANGLE = 1000;
+    public static final double MIN_ANGLE = -1000;
+    public static final double SCORE_ANGLE_F_L = 0;
+    public static final double SCORE_ANGLE_R_L = 0;
+    public static final double SCORE_ANGLE_F_H = 0;
+    public static final double SCORE_ANGLE_R_H = 0;
+    public static final double INTAKE_ANGLE_F = 0;
+    public static final double INTAKE_ANGLE_R = 0;
+    public static final double REST_ANGLE = 0;//all values between these comments are filler angles and are to be adjusted during tuning
+  }
+
+  public class EndEffector {
+    public static final int LEFT_MOTOR_ID = 59;
+    public static final int RIGHT_MOTOR_ID = 26;
+    public static final double BALL_SPIKE_CURRENT = 11;
+    public static final double ACCEL_SPIKE_CURRENT = 15;
+    public static final double NORMAL_ACTIVE_SPEED = 0.25;
+    public static final double SPIKE_SECONDS = 0.5;
+    public static final double OUTTAKE_SECONDS = 1;
   }
 }
