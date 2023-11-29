@@ -24,21 +24,21 @@ public final class Constants {
 
   public static class Drive{
     //motor ids
-    public static final int FL_TURN_MOTOR_ID = 0;
-    public static final int FL_DRIVE_MOTOR_ID = 0;
-    public static final int FL_CCODER_ID = 0;
+    public static final int FL_TURN_MOTOR_ID = 5;
+    public static final int FL_DRIVE_MOTOR_ID = 4;
+    public static final int FL_CCODER_ID = 23;
 
-    public static final int FR_TURN_MOTOR_ID = 0;
-    public static final int FR_DRIVE_MOTOR_ID = 0;
-    public static final int FR_CCODER_ID = 0;
+    public static final int FR_TURN_MOTOR_ID = 6;
+    public static final int FR_DRIVE_MOTOR_ID = 20;
+    public static final int FR_CCODER_ID = 24;
 
-    public static final int BL_TURN_MOTOR_ID = 0;
-    public static final int BL_DRIVE_MOTOR_ID = 0;
-    public static final int BL_CCODER_ID = 0;
+    public static final int BL_TURN_MOTOR_ID = 3;
+    public static final int BL_DRIVE_MOTOR_ID = 50;
+    public static final int BL_CCODER_ID = 22;
 
-    public static final int BR_TURN_MOTOR_ID = 0;
-    public static final int BR_DRIVE_MOTOR_ID = 0;
-    public static final int BR_CCODER_ID = 0;
+    public static final int BR_TURN_MOTOR_ID = 8;
+    public static final int BR_DRIVE_MOTOR_ID = 11;
+    public static final int BR_CCODER_ID = 21;
   }
 
   public class Arm{
