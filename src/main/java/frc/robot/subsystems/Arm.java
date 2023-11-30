@@ -25,7 +25,7 @@ public class Arm extends SubsystemBase{
     private ArmFeedforward feedForward = new ArmFeedforward(kS, kG, kV, kA);
     private RelativeEncoder encoder = armMotor.getEncoder();
 
-    private double currentAngle;
+    // private double currentAngle;
     private double targetAngle = 0;
 
     private Arm() {
@@ -35,16 +35,16 @@ public class Arm extends SubsystemBase{
         this.armMotor.restoreFactoryDefaults();
         this.armMotor.setInverted(false);
         this.armMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        encoder.setPosition(Constants.Arm.MIN_ANGLE);
+        encoder.setPosition(this.toTicks(Constants.Arm.MIN_ANGLE));
     }
 
     @Override
     public void periodic() {
         controller.setPID(kP, kI, kD);
-        currentAngle = this.getAngle();
+        // currentAngle = this.getAngle();
         double feedforward = feedForward.calculate(Math.toRadians(targetAngle), 6, 2);//kF * Math.abs(Math.cos(Math.toRadians(currentAngle))); // account for gravity: tourque =  r * F * cos(theta) |  r * F is tunable kF term
 
-        armMotor.set(controller.calculate(encoder.getPosition(), this.toTicks(currentAngle)) * feedforward);
+        armMotor.set(controller.calculate(encoder.getPosition(), this.toTicks(targetAngle)) * feedforward);
     }
 
     public double getAngle() {
