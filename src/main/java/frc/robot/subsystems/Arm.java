@@ -80,15 +80,14 @@ public class Arm extends SubsystemBase{
     }
 
     public void setIntakeForward(){
-        this.setTarget(Constants.Arm.INTAKE_ANGLE_F);
+        this.setTarget(Constants.Arm.MIN_ANGLE);
     }
 
     public void setIntakeRear(){
-        this.setTarget(Constants.Arm.INTAKE_ANGLE_R);
+        this.setTarget(Constants.Arm.MAX_ANGLE);
     }
 
     public void stow(){
-        //TODO set as default command for this subsystem in RobotContainer
         this.setTarget(Constants.Arm.STOW_ANGLE);
     }
 
