@@ -26,7 +26,7 @@ public class Arm extends SubsystemBase{
     private RelativeEncoder encoder = armMotor.getEncoder();
 
     // private double currentAngle;
-    private double targetAngle = 0;
+    private double targetAngle = Constants.Arm.STOW_ANGLE;
 
     private Arm() {
         this.setName("Arm");
