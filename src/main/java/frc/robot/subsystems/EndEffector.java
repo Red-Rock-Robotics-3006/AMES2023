@@ -1,25 +1,19 @@
-package frc.robot.subsystems.scoring;
+package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class EndEffectorSubsystem extends SubsystemBase {
-    public static double BALL_SPIKE_CURRENT = 11;
-    public static double ACCEL_SPIKE_CURRENT = 15;
-
-    public static double NORMAL_ACTIVE_SPEED = 0.25;
-
-    public static double SPIKE_SECONDS = 0.5;
-    public static double OUTTAKE_SECONDS = 1;
+public class EndEffector extends SubsystemBase {
+    
 
     private final CANSparkMax leftMotor = new CANSparkMax(Constants.EndEffector.LEFT_MOTOR_ID, CANSparkMax.MotorType.kBrushless);
     private final CANSparkMax rightMotor = new CANSparkMax(Constants.EndEffector.RIGHT_MOTOR_ID, CANSparkMax.MotorType.kBrushless);
 
 
-    private static EndEffectorSubsystem instance = null;
+    private static EndEffector instance = null;
 
-    private EndEffectorSubsystem() {
+    private EndEffector() {
         this.setName("End Effector");
         this.register();
 
@@ -49,25 +43,24 @@ public class EndEffectorSubsystem extends SubsystemBase {
     }
 
     public void startIntake(){
-        this.startIntake(NORMAL_ACTIVE_SPEED);
+        this.startIntake(Constants.EndEffector.NORMAL_ACTIVE_SPEED);
     }
 
     public void startOutput(){
-        this.startOutput(NORMAL_ACTIVE_SPEED);
+        this.startOutput(Constants.EndEffector.NORMAL_ACTIVE_SPEED);
     }
 
 
     public boolean hasBall(){
-        return (leftMotor.getOutputCurrent() > BALL_SPIKE_CURRENT && leftMotor.getOutputCurrent() < ACCEL_SPIKE_CURRENT) 
-                || (rightMotor.getOutputCurrent() > BALL_SPIKE_CURRENT && rightMotor.getOutputCurrent() < ACCEL_SPIKE_CURRENT);
+        return (leftMotor.getOutputCurrent() > Constants.EndEffector.BALL_SPIKE_CURRENT && leftMotor.getOutputCurrent() < Constants.EndEffector.ACCEL_SPIKE_CURRENT) || (rightMotor.getOutputCurrent() > Constants.EndEffector.BALL_SPIKE_CURRENT && rightMotor.getOutputCurrent() < Constants.EndEffector.ACCEL_SPIKE_CURRENT);
     }
 
     public boolean aboveSpikeLimit(){
-        return leftMotor.getOutputCurrent() > BALL_SPIKE_CURRENT || rightMotor.getOutputCurrent() > BALL_SPIKE_CURRENT;
+        return leftMotor.getOutputCurrent() > Constants.EndEffector.BALL_SPIKE_CURRENT || rightMotor.getOutputCurrent() > Constants.EndEffector.BALL_SPIKE_CURRENT;
     }
 
-    public static EndEffectorSubsystem getInstance(){
-        if (instance == null) instance = new EndEffectorSubsystem();
+    public static EndEffector getInstance(){
+        if (instance == null) instance = new EndEffector();
         return instance;
     }
 }

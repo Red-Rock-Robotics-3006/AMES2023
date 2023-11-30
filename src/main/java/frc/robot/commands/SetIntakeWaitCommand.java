@@ -1,14 +1,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.scoring.ArmSubsystem;
-import frc.robot.subsystems.scoring.EndEffectorSubsystem;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.EndEffector;
 
 public class SetIntakeWaitCommand extends CommandBase{
-    private final EndEffectorSubsystem m_effector;
-    private final ArmSubsystem m_arm;
+    private final EndEffector m_effector;
+    private final Arm m_arm;
 
-    public SetIntakeWaitCommand(EndEffectorSubsystem effector, ArmSubsystem arm){
+    public SetIntakeWaitCommand(EndEffector effector, Arm arm){
         this.m_effector = effector;
         this.m_arm = arm;
 

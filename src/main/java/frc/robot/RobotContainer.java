@@ -6,8 +6,8 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.SetIntakeWaitCommand;
-import frc.robot.subsystems.scoring.ArmSubsystem;
-import frc.robot.subsystems.scoring.EndEffectorSubsystem;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.EndEffector;
 import frc.robot.subsystems.swerve.Drivetrain;
 import frc.robot.subsystems.swerve.Gyroscope;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -32,8 +32,8 @@ public class RobotContainer {
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.DRIVER_CONTROLLER_PORT);
 
-  private EndEffectorSubsystem m_endEffector = EndEffectorSubsystem.getInstance();
-  private ArmSubsystem m_arm = ArmSubsystem.getInstance();
+  private EndEffector m_endEffector = EndEffector.getInstance();
+  private Arm m_arm = Arm.getInstance();
   private Drivetrain m_swerve = Drivetrain.getInstance();
 
   private Command driveCommand = null;
@@ -129,41 +129,41 @@ public class RobotContainer {
         () -> m_endEffector.hasBall(), 
         m_arm, m_endEffector));
 
+
+    //output angle low forward (press x)
+    mechStick.x()
+      .onTrue(new InstantCommand(
+        () -> m_arm.setOutputForwardL(),
+        m_arm));
+
+    //output angle low rear (press x and dpad_left)
+    mechStick.x().and(mechStick.povLeft())
+      .onTrue(new InstantCommand(
+        () -> m_arm.setOutputRearL(),
+        m_arm));
+
+    //output angle high forward (press b)
+    mechStick.b()
+      .onTrue(new InstantCommand(
+        () -> m_arm.setOutputForwardH(),
+        m_arm));
+
+    //output angle high rear (press b and dpad_left)
+    mechStick.x()
+      .onTrue(new InstantCommand(
+        () -> m_arm.setOutputRearH(),
+        m_arm));
+
     
     // outtake/shoot (press right bumper)
     mechStick.rightBumper()
       .onTrue(new StartEndCommand(
         () -> m_endEffector.startOutput(),
         () -> m_endEffector.brake(),
-        m_arm
-      ).withTimeout(EndEffectorSubsystem.OUTTAKE_SECONDS)
+        m_arm, m_endEffector
+      ).withTimeout(Constants.EndEffector.OUTTAKE_SECONDS)
       );
-
-    //score pos forward (press x)
-    mechStick.x()
-      .onTrue(new InstantCommand(() -> m_arm.setOutTakeForward(), m_arm));
-
-    //score pos rear (press x and dpad_left)
-    mechStick.x().and(mechStick.povLeft())
-      .onTrue(new InstantCommand(() -> m_arm.setOutTakeRear(), m_arm));
-    
-    //beta intake forward (press left bumper)
-    mechStick.leftBumper()
-      .onTrue(new SequentialCommandGroup(
-        new InstantCommand(() -> m_arm.setIntakeForward(), m_arm),
-        new InstantCommand(() -> m_endEffector.startIntake(), m_endEffector),
-        new WaitCommand(EndEffectorSubsystem.SPIKE_SECONDS),
-        new SetIntakeWaitCommand(m_endEffector, m_arm)
-      ));
       
-    //beta intake rear (press left bumper and dpad_left)
-    mechStick.leftBumper().and(mechStick.povLeft())
-     .onTrue(new SequentialCommandGroup(
-        new InstantCommand(() -> m_arm.setIntakeForward(), m_arm),
-        new InstantCommand(() -> m_endEffector.startIntake(), m_endEffector),
-        new WaitCommand(EndEffectorSubsystem.SPIKE_SECONDS),
-        new SetIntakeWaitCommand(m_endEffector, m_arm)
-        ));
     
     //default behavior to stow arm and brake intake
     m_endEffector.setDefaultCommand(new RunCommand(() -> m_endEffector.brake(), m_endEffector));
