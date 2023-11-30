@@ -149,7 +149,7 @@ public class RobotContainer {
         m_arm));
 
     //output angle high rear (press b and dpad_left)
-    mechStick.x()
+    mechStick.x().and(mechStick.povLeft())
       .onTrue(new InstantCommand(
         () -> m_arm.setOutputRearH(),
         m_arm));
