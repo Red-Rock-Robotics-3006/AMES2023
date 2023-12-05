@@ -1,5 +1,4 @@
 package frc.robot.subsystems.swerve;
-
 import com.ctre.phoenix.sensors.Pigeon2;
 
 public class Gyroscope {

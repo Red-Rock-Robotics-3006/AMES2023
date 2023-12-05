@@ -38,10 +38,10 @@ public class Drivetrain extends SubsystemBase {
   private final Translation2d m_backLeftLocation = new Translation2d(-(BASE_LENGTH / 2), BASE_WIDTH / 2);
   private final Translation2d m_backRightLocation = new Translation2d(-(BASE_LENGTH / 2), -(BASE_WIDTH / 2));
 
-  private final SwerveModule m_frontRight = new SwerveModule(20, 6, 0, false); //m_frontLeft
-  private final SwerveModule m_backRight = new SwerveModule(11, 8, 41, true); //m_frontRight
-  private final SwerveModule m_frontLeft = new SwerveModule(4, 5, 44, false); //m_backLeft
-  private final SwerveModule m_backLeft = new SwerveModule(50, 3, 43, true); //m_backRight
+  private final SwerveModule m_frontRight = new SwerveModule(20, 3, 24, false); //m_frontLeft
+  private final SwerveModule m_backRight = new SwerveModule(11, 5, 21, true); //m_frontRight
+  private final SwerveModule m_frontLeft = new SwerveModule(4, 8, 22, false); //m_backLeft
+  private final SwerveModule m_backLeft = new SwerveModule(50, 6, 23, true); //m_backRight
 
   private final Pigeon2 m_gyro = Gyroscope.getPigeonInstance();
 
@@ -100,12 +100,19 @@ public class Drivetrain extends SubsystemBase {
             ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, 2*Math.PI*(rot/360), new Rotation2d(-2*Math.PI*m_gyro.getYaw()/360d)) //High Risk Change!
             : new ChassisSpeeds(xSpeed, ySpeed, 2*Math.PI*(rot/360)),this.centerOfRotation);
       SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, kMaxSpeed); //Look into overloaded method with more parameters
-      
+      System.out.println( m_frontLeft.getState());
+      System.out.println( m_frontRight.getState());
+      System.out.println( m_backRight.getState());
+      System.out.println( m_frontLeft.getState());
       m_frontLeft.setDesiredState(swerveModuleStates[0]);
       m_frontRight.setDesiredState(swerveModuleStates[1]);
       m_backLeft.setDesiredState(swerveModuleStates[2]);
       m_backRight.setDesiredState(swerveModuleStates[3]);
     } else {
+      System.out.println( m_frontLeft.getState());
+      System.out.println( m_frontRight.getState());
+      System.out.println( m_backRight.getState());
+      System.out.println( m_frontLeft.getState());
       m_frontLeft.zeroPower();
       m_frontRight.zeroPower();
       m_backLeft.zeroPower();
@@ -156,6 +163,7 @@ public class Drivetrain extends SubsystemBase {
       this.updateOdometry();
     } catch (NoSuchMethodError e){
       SmartDashboardWrapper.createDashboardNumber("update odometry error", 10);
+      
     }
   }
 

@@ -122,6 +122,7 @@ public class SwerveModule extends SubsystemBase {
       360 - Math.abs(m_cCoder.getAbsolutePosition() - targetAngle)
     ) {
       linearControl = 0.85*(m_cCoder.getAbsolutePosition() - targetAngle)/360d;
+      System.out.println("Turning Mode" + m_turningMotor.getBaseID());
       SmartDashboard.putNumber("Turning Mode" + m_turningMotor.getBaseID(), 0);
     } else {
       linearControl = -0.85*(360 - Math.abs(m_cCoder.getAbsolutePosition() - targetAngle))/360d;

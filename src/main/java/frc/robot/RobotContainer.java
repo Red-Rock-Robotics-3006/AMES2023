@@ -58,8 +58,6 @@ public class RobotContainer {
 
     m_driverController.y().onTrue(new InstantCommand(() -> Gyroscope.getPigeonInstance().setYaw(0)));
 
-    
-
     m_driverController.rightBumper()
     .onTrue(new InstantCommand(() -> {
       RunCommand dc = new RunCommand(
@@ -72,7 +70,7 @@ public class RobotContainer {
         m_swerve
       );
       dc.setName("Joystick Control");
-
+      System.out.println("LeftY: " + m_driverController.getLeftY() + "\nLeftX: " + m_driverController.getLeftX() + "\nRightX: " + m_driverController.getRightX());
       this.driveCommand = dc;
       m_swerve.getDefaultCommand().cancel();
       m_swerve.setDefaultCommand(dc);
@@ -142,6 +140,11 @@ public class RobotContainer {
         () -> m_arm.setOutputRearL(),
         m_arm));
 
+    mechStick.x().and(mechStick.povRight())
+      .onTrue(new InstantCommand(
+        () -> m_arm.setOutputForwardH(),
+        m_arm));    
+
     //output angle high forward (press b)
     mechStick.b()
       .onTrue(new InstantCommand(
@@ -163,26 +166,39 @@ public class RobotContainer {
         m_arm, m_endEffector
       ).withTimeout(Constants.EndEffector.OUTTAKE_SECONDS)
       );
+
+    m_driverController.x()
+      .onTrue(new InstantCommand(
+        () -> m_arm.goUp()))
+      .onFalse(new InstantCommand(
+        () -> m_arm.stop()));
+
+    m_driverController.b()
+      .onTrue(new InstantCommand(
+        () -> m_arm.goDown()))
+      .onFalse(new InstantCommand(
+        () -> m_arm.stop()));
       
     
     //default behavior to stow arm and brake intake
     m_endEffector.setDefaultCommand(new RunCommand(() -> m_endEffector.brake(), m_endEffector));
-    m_arm.setDefaultCommand(new RunCommand(() -> m_arm.stow(), m_arm));
+    // m_arm.setDefaultCommand(new RunCommand(() -> m_arm.stow(), m_arm));
 
   }
 
   public void enableControllers() {
     if(m_swerve.getDefaultCommand() != null) m_swerve.getDefaultCommand().cancel();
-
+    System.out.println("Controllers enabled");
     RunCommand dc = new RunCommand(
-      () -> m_swerve.drive(
-        m_driverController.getRawAxis(0)*4, 
-        m_driverController.getRawAxis(1)*4, 
-        Math.pow(m_driverController.getRawAxis(2),3)*150,
+      () -> {m_swerve.drive(
+        m_driverController.getLeftY()*2, 
+        m_driverController.getLeftX()*2, 
+        Math.pow(m_driverController.getRightX(),3)*150,
         true
-      ),
-      m_swerve
-    );
+      );//,
+      //m_swerve
+      System.out.println("LeftY: " + m_driverController.getLeftY() + "\nLeftX: " + m_driverController.getLeftX() + "\nRightX: " + m_driverController.getRightX());
+    });
     dc.setName("Joystick Control");
 
     this.driveCommand = dc;

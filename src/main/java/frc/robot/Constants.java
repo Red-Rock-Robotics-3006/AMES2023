@@ -44,20 +44,20 @@ public final class Constants {
   }
 
   public class Arm {
-    public static final int MOTOR_ID = 1;//FILLER
+    public static final int MOTOR_ID = 13;//FILLER
     public static final int TICKS_PER_DEGREE = 2520 / 360;
     public static final double MAX_ANGLE = 195;
     public static final double MIN_ANGLE = -14;
-    public static final double SCORE_ANGLE_F_L = 0;//-----
+    public static final double SCORE_ANGLE_F_L = 45;//-----
     public static final double SCORE_ANGLE_R_L = 0;
-    public static final double SCORE_ANGLE_F_H = 0;
+    public static final double SCORE_ANGLE_F_H = 180;
     public static final double SCORE_ANGLE_R_H = 0;//all values between these comments are filler angles and are to be adjusted during tuning
     public static final double STOW_ANGLE = 90;
   }
 
   public class EndEffector {
     public static final int LEFT_MOTOR_ID = 59;
-    public static final int RIGHT_MOTOR_ID = 26;
+    public static final int RIGHT_MOTOR_ID = 27;
     public static final double BALL_SPIKE_CURRENT = 11;
     public static final double ACCEL_SPIKE_CURRENT = 15;
     public static final double NORMAL_ACTIVE_SPEED = 0.25;
