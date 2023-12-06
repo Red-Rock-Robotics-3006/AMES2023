@@ -33,10 +33,10 @@ public class Drivetrain extends SubsystemBase {
   public static final double BASE_WIDTH = 0.59055;
   public static final double BASE_LENGTH = 0.59055;
 
-  private final Translation2d m_frontLeftLocation = new Translation2d((BASE_LENGTH / 2), BASE_WIDTH / 2);
-  private final Translation2d m_frontRightLocation = new Translation2d((BASE_LENGTH / 2), -(BASE_WIDTH / 2));
-  private final Translation2d m_backLeftLocation = new Translation2d(-(BASE_LENGTH / 2), BASE_WIDTH / 2);
-  private final Translation2d m_backRightLocation = new Translation2d(-(BASE_LENGTH / 2), -(BASE_WIDTH / 2));
+  private final Translation2d m_frontLeftLocation = new Translation2d(-0.381, -0.381);
+  private final Translation2d m_frontRightLocation = new Translation2d(0.381, -0.381);
+  private final Translation2d m_backLeftLocation = new Translation2d(-0.381, 0.381);
+  private final Translation2d m_backRightLocation = new Translation2d(0.381, 0.381);
 
   private final SwerveModule m_frontRight = new SwerveModule(20, 3, 24, false); //m_frontLeft
   private final SwerveModule m_backRight = new SwerveModule(11, 5, 21, true); //m_frontRight
