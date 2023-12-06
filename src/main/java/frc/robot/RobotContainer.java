@@ -10,10 +10,12 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.EndEffector;
 import frc.robot.subsystems.swerve.Drivetrain;
 import frc.robot.subsystems.swerve.Gyroscope;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -62,15 +64,15 @@ public class RobotContainer {
     .onTrue(new InstantCommand(() -> {
       RunCommand dc = new RunCommand(
         () -> m_swerve.drive(
-          m_driverController.getLeftX()*4, 
-          m_driverController.getLeftY()*4, 
-          Math.pow(m_driverController.getRightX(),3)*2,
+          m_driverController.getRawAxis(Constants.OperatorConstants.STRAFE_AXIS)*4, 
+          m_driverController.getRawAxis(Constants.OperatorConstants.FORWARD_AXIS)*4, 
+          Math.pow(m_driverController.getRawAxis(Constants.OperatorConstants.TURN_AXIS),3)*2,
           false
         ),
         m_swerve
       );
       dc.setName("Joystick Control");
-      System.out.println("LeftY: " + m_driverController.getLeftY() + "\nLeftX: " + m_driverController.getLeftX() + "\nRightX: " + m_driverController.getRightX());
+      System.out.println("LeftY: " + m_driverController.getRawAxis(Constants.OperatorConstants.FORWARD_AXIS) + "\nLeftX: " + m_driverController.getRawAxis(Constants.OperatorConstants.STRAFE_AXIS) + "\nRightX: " + m_driverController.getRawAxis(Constants.OperatorConstants.TURN_AXIS));
       this.driveCommand = dc;
       m_swerve.getDefaultCommand().cancel();
       m_swerve.setDefaultCommand(dc);
@@ -78,9 +80,9 @@ public class RobotContainer {
     .onFalse(new InstantCommand(() -> {
       RunCommand dc = new RunCommand(
         () -> m_swerve.drive(
-          m_driverController.getLeftX()*4, 
-          m_driverController.getLeftY()*4, 
-          Math.pow(m_driverController.getRightX(),3)*100,
+          m_driverController.getRawAxis(Constants.OperatorConstants.STRAFE_AXIS)*4, 
+          m_driverController.getRawAxis(Constants.OperatorConstants.FORWARD_AXIS)*4, 
+          Math.pow(m_driverController.getRawAxis(Constants.OperatorConstants.TURN_AXIS),3)*100,
           true
         ),
         m_swerve
@@ -186,18 +188,22 @@ public class RobotContainer {
 
   }
 
+  private void configureBindings2(){
+
+  }
+
   public void enableControllers() {
     if(m_swerve.getDefaultCommand() != null) m_swerve.getDefaultCommand().cancel();
     System.out.println("Controllers enabled");
     RunCommand dc = new RunCommand(
       () -> {m_swerve.drive(
-        m_driverController.getLeftY()*2, 
-        m_driverController.getLeftX()*2, 
-        Math.pow(m_driverController.getRightX(),3)*150,
+        m_driverController.getRawAxis(Constants.OperatorConstants.FORWARD_AXIS)*2, 
+        m_driverController.getRawAxis(Constants.OperatorConstants.STRAFE_AXIS)*2, 
+        Math.pow(m_driverController.getRawAxis(Constants.OperatorConstants.TURN_AXIS),3)*150,
         true
       );//,
       //m_swerve
-      System.out.println("LeftY: " + m_driverController.getLeftY() + "\nLeftX: " + m_driverController.getLeftX() + "\nRightX: " + m_driverController.getRightX());
+      System.out.println("LeftY: " + m_driverController.getRawAxis(Constants.OperatorConstants.FORWARD_AXIS) + "\nLeftX: " + m_driverController.getRawAxis(Constants.OperatorConstants.STRAFE_AXIS) + "\nRightX: " + m_driverController.getRawAxis(Constants.OperatorConstants.TURN_AXIS));
     });
     dc.setName("Joystick Control");
 
@@ -229,7 +235,7 @@ public class RobotContainer {
 
 
   public double[] getControllerInputs(){
-    return new double[]{m_driverController.getLeftX(), m_driverController.getLeftY(), m_driverController.getRightX()};
+    return new double[]{m_driverController.getRawAxis(Constants.OperatorConstants.STRAFE_AXIS), m_driverController.getRawAxis(Constants.OperatorConstants.FORWARD_AXIS), m_driverController.getRawAxis(Constants.OperatorConstants.TURN_AXIS)};
   }
 
 
