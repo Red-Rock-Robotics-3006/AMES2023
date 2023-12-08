@@ -1,4 +1,4 @@
-// Copyright (c) FIRST and other WPILib contributors.
+  // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
@@ -17,9 +17,6 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.util.SmartDashboardWrapper;
-
-import static frc.robot.Constants.Drive;
 
 /** Represents a swerve drive style drivetrain. */
 @SuppressWarnings("unused")
@@ -30,9 +27,6 @@ public class Drivetrain extends SubsystemBase {
   public static final double kMaxAngularSpeed = 2*Math.PI;
   public static final double kModuleMaxSpeed = 5.0;
 
-  public static final double BASE_WIDTH = 0.59055;
-  public static final double BASE_LENGTH = 0.59055;
-
   private final Translation2d m_frontLeftLocation = new Translation2d(-0.381, -0.381);
   private final Translation2d m_frontRightLocation = new Translation2d(0.381, -0.381);
   private final Translation2d m_backLeftLocation = new Translation2d(-0.381, 0.381);
@@ -40,8 +34,8 @@ public class Drivetrain extends SubsystemBase {
 
   private final SwerveModule m_frontRight = new SwerveModule(20, 3, 24, false); //m_frontLeft
   private final SwerveModule m_backRight = new SwerveModule(11, 5, 21, true); //m_frontRight
-  private final SwerveModule m_frontLeft = new SwerveModule(4, 8, 22, false); //m_backLeft
-  private final SwerveModule m_backLeft = new SwerveModule(50, 6, 23, true); //m_backRight
+  private final SwerveModule m_frontLeft = new SwerveModule(50, 6, 23, false); //m_backLeft
+  private final SwerveModule m_backLeft = new SwerveModule(4, 8, 22, true); //m_backRight
 
   private final Pigeon2 m_gyro = Gyroscope.getPigeonInstance();
 
@@ -100,19 +94,12 @@ public class Drivetrain extends SubsystemBase {
             ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, 2*Math.PI*(rot/360), new Rotation2d(-2*Math.PI*m_gyro.getYaw()/360d)) //High Risk Change!
             : new ChassisSpeeds(xSpeed, ySpeed, 2*Math.PI*(rot/360)),this.centerOfRotation);
       SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, kMaxSpeed); //Look into overloaded method with more parameters
-      System.out.println( m_frontLeft.getState());
-      System.out.println( m_frontRight.getState());
-      System.out.println( m_backRight.getState());
-      System.out.println( m_frontLeft.getState());
+      
       m_frontLeft.setDesiredState(swerveModuleStates[0]);
       m_frontRight.setDesiredState(swerveModuleStates[1]);
       m_backLeft.setDesiredState(swerveModuleStates[2]);
       m_backRight.setDesiredState(swerveModuleStates[3]);
     } else {
-      System.out.println( m_frontLeft.getState());
-      System.out.println( m_frontRight.getState());
-      System.out.println( m_backRight.getState());
-      System.out.println( m_frontLeft.getState());
       m_frontLeft.zeroPower();
       m_frontRight.zeroPower();
       m_backLeft.zeroPower();
@@ -158,28 +145,9 @@ public class Drivetrain extends SubsystemBase {
   
   @Override
   public void periodic() {
-    // updateOdometry();
-    try{
-      this.updateOdometry();
-    } catch (NoSuchMethodError e){
-      SmartDashboardWrapper.createDashboardNumber("update odometry error", 10);
-      
-    }
+    updateOdometry();
   }
 
   @Override 
   public void simulationPeriodic() {}
-
-  // non topher code
-  //---------------------------------------------------------------------------------------
-  
-  public void update(double strafe, double forward, double rot, double heading){
-    // pid
-    //TODO: move default drive code here, have drive bind to controller
-  }
-
-  public double[] configureInputs(double leftX, double leftY, double rot){
-    return new double[]{0,0,0}; //stub temp
-    //TODO: implement
-  }
 }

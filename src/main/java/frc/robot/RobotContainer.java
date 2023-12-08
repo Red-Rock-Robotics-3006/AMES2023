@@ -34,8 +34,8 @@ public class RobotContainer {
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.DRIVER_CONTROLLER_PORT);
 
-  private EndEffector m_endEffector = EndEffector.getInstance();
-  private Arm m_arm = Arm.getInstance();
+  // private EndEffector m_endEffector = EndEffector.getInstance();
+  // private Arm m_arm = Arm.getInstance();
   private Drivetrain m_swerve = Drivetrain.getInstance();
 
   private Command driveCommand = null;
@@ -112,79 +112,79 @@ public class RobotContainer {
 
 
     //alpha intake forward (press a)
-    mechStick.a()
-      .onTrue(new FunctionalCommand(
-        () -> m_arm.setIntakeForward(), //init
-        () -> m_endEffector.startIntake(), //execute
-        (interrupted) -> m_arm.stow(), //end
-        () -> m_endEffector.hasBall(), //isFinished
-        m_arm, m_endEffector)); //requirements
+    // mechStick.a()
+    //   .onTrue(new FunctionalCommand(
+    //     () -> m_arm.setIntakeForward(), //init
+    //     () -> m_endEffector.startIntake(), //execute
+    //     (interrupted) -> m_arm.stow(), //end
+    //     () -> m_endEffector.hasBall(), //isFinished
+    //     m_arm, m_endEffector)); //requirements
     
-    //alpha intake rear (press a and dpad_left)
-    mechStick.a().and(mechStick.povLeft())
-      .onTrue(new FunctionalCommand(
-        () -> m_arm.setIntakeRear(),
-        () -> m_endEffector.startIntake(),
-        (interrupted) -> m_arm.stow(), // (interrupted) -> {m_arm.stow(); m_effector.brake();},
-        () -> m_endEffector.hasBall(), 
-        m_arm, m_endEffector));
+    // //alpha intake rear (press a and dpad_left)
+    // mechStick.a().and(mechStick.povLeft())
+    //   .onTrue(new FunctionalCommand(
+    //     () -> m_arm.setIntakeRear(),
+    //     () -> m_endEffector.startIntake(),
+    //     (interrupted) -> m_arm.stow(), // (interrupted) -> {m_arm.stow(); m_effector.brake();},
+    //     () -> m_endEffector.hasBall(), 
+    //     m_arm, m_endEffector));
 
 
-    //output angle low forward (press x)
-    mechStick.x()
-      .onTrue(new InstantCommand(
-        () -> m_arm.setOutputForwardL(),
-        m_arm));
+    // //output angle low forward (press x)
+    // mechStick.x()
+    //   .onTrue(new InstantCommand(
+    //     () -> m_arm.setOutputForwardL(),
+    //     m_arm));
 
-    //output angle low rear (press x and dpad_left)
-    mechStick.x().and(mechStick.povLeft())
-      .onTrue(new InstantCommand(
-        () -> m_arm.setOutputRearL(),
-        m_arm));
+    // //output angle low rear (press x and dpad_left)
+    // mechStick.x().and(mechStick.povLeft())
+    //   .onTrue(new InstantCommand(
+    //     () -> m_arm.setOutputRearL(),
+    //     m_arm));
 
-    mechStick.x().and(mechStick.povRight())
-      .onTrue(new InstantCommand(
-        () -> m_arm.setOutputForwardH(),
-        m_arm));    
+    // mechStick.x().and(mechStick.povRight())
+    //   .onTrue(new InstantCommand(
+    //     () -> m_arm.setOutputForwardH(),
+    //     m_arm));    
 
-    //output angle high forward (press b)
-    mechStick.b()
-      .onTrue(new InstantCommand(
-        () -> m_arm.setOutputForwardH(),
-        m_arm));
+    // //output angle high forward (press b)
+    // mechStick.b()
+    //   .onTrue(new InstantCommand(
+    //     () -> m_arm.setOutputForwardH(),
+    //     m_arm));
 
-    //output angle high rear (press b and dpad_left)
-    mechStick.b().and(mechStick.povLeft())
-      .onTrue(new InstantCommand(
-        () -> m_arm.setOutputRearH(),
-        m_arm));
+    // //output angle high rear (press b and dpad_left)
+    // mechStick.b().and(mechStick.povLeft())
+    //   .onTrue(new InstantCommand(
+    //     () -> m_arm.setOutputRearH(),
+    //     m_arm));
 
     
-    // outtake/shoot (press right bumper)
-    mechStick.rightBumper()
-      .onTrue(new StartEndCommand(
-        () -> m_endEffector.startOutput(),
-        () -> m_endEffector.brake(),
-        m_arm, m_endEffector
-      ).withTimeout(Constants.EndEffector.OUTTAKE_SECONDS)
-      );
+    // // outtake/shoot (press right bumper)
+    // mechStick.rightBumper()
+    //   .onTrue(new StartEndCommand(
+    //     () -> m_endEffector.startOutput(),
+    //     () -> m_endEffector.brake(),
+    //     m_arm, m_endEffector
+    //   ).withTimeout(Constants.EndEffector.OUTTAKE_SECONDS)
+    //   );
 
-    m_driverController.x()
-      .onTrue(new InstantCommand(
-        () -> m_arm.goUp()))
-      .onFalse(new InstantCommand(
-        () -> m_arm.stop()));
+    // m_driverController.x()
+    //   .onTrue(new InstantCommand(
+    //     () -> m_arm.goUp()))
+    //   .onFalse(new InstantCommand(
+    //     () -> m_arm.stop()));
 
-    m_driverController.b()
-      .onTrue(new InstantCommand(
-        () -> m_arm.goDown()))
-      .onFalse(new InstantCommand(
-        () -> m_arm.stop()));
+    // m_driverController.b()
+    //   .onTrue(new InstantCommand(
+    //     () -> m_arm.goDown()))
+    //   .onFalse(new InstantCommand(
+    //     () -> m_arm.stop()));
       
     
-    //default behavior to stow arm and brake intake
-    m_endEffector.setDefaultCommand(new RunCommand(() -> m_endEffector.brake(), m_endEffector));
-    // m_arm.setDefaultCommand(new RunCommand(() -> m_arm.stow(), m_arm));
+    // //default behavior to stow arm and brake intake
+    // m_endEffector.setDefaultCommand(new RunCommand(() -> m_endEffector.brake(), m_endEffector));
+    // // m_arm.setDefaultCommand(new RunCommand(() -> m_arm.stow(), m_arm));
 
   }
 
@@ -194,23 +194,40 @@ public class RobotContainer {
 
   public void enableControllers() {
     if(m_swerve.getDefaultCommand() != null) m_swerve.getDefaultCommand().cancel();
-    System.out.println("Controllers enabled");
+
     RunCommand dc = new RunCommand(
-      () -> {m_swerve.drive(
-        m_driverController.getRawAxis(Constants.OperatorConstants.FORWARD_AXIS)*2, 
-        m_driverController.getRawAxis(Constants.OperatorConstants.STRAFE_AXIS)*2, 
+      () -> m_swerve.drive(
+        m_driverController.getRawAxis(Constants.OperatorConstants.STRAFE_AXIS)*4, 
+        m_driverController.getRawAxis(Constants.OperatorConstants.FORWARD_AXIS)*4, 
         Math.pow(m_driverController.getRawAxis(Constants.OperatorConstants.TURN_AXIS),3)*150,
         true
-      );//,
-      //m_swerve
-      System.out.println("LeftY: " + m_driverController.getRawAxis(Constants.OperatorConstants.FORWARD_AXIS) + "\nLeftX: " + m_driverController.getRawAxis(Constants.OperatorConstants.STRAFE_AXIS) + "\nRightX: " + m_driverController.getRawAxis(Constants.OperatorConstants.TURN_AXIS));
-    });
+      ),
+      m_swerve
+    );
     dc.setName("Joystick Control");
 
     this.driveCommand = dc;
     m_swerve.setDefaultCommand(dc);
 
+    // RunCommand mce = new RunCommand(
+    //   () -> {
+    //     m_extender.setSpeed(0.5*mechStick.getRawAxis(4));
+    //   },
+    //   m_extender
+    // );
+    // mce.setName("Joystick Extend Control");
 
+    // m_extender.setDefaultCommand(mce);
+
+    // RunCommand mcu = new RunCommand(
+    //   () -> {
+    //     m_elevator.setSpeed(0.3*mechStick.getRawAxis(5));
+    //   },
+    //   m_elevator
+    // );
+    // mcu.setName("Joystick Elevator Control");
+
+    // m_elevator.setDefaultCommand(mcu);
   }
 
   public void disableControllers() {
@@ -233,19 +250,22 @@ public class RobotContainer {
     m_swerve.setDefaultCommand(dc);
   }
 
-
-  public double[] getControllerInputs(){
-    return new double[]{m_driverController.getRawAxis(Constants.OperatorConstants.STRAFE_AXIS), m_driverController.getRawAxis(Constants.OperatorConstants.FORWARD_AXIS), m_driverController.getRawAxis(Constants.OperatorConstants.TURN_AXIS)};
-  }
-
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return null;//Autos.exampleAuto(m_exampleSubsystem);
+    /*return new InstantCommand(() -> {
+      RunCommand dc = new RunCommand(
+        () -> m_swerve.drive(
+          0,-0.56,0,true
+        ),
+        m_swerve
+      );
+      dc.setName("Joystick Control");
+  
+      this.driveCommand = dc;
+      m_swerve.setDefaultCommand(dc);
+    });*/
+    // return this.m_chooser.getSelected();
+    //return new CSBalancing(false);
+    return null;
   }
+
 }
