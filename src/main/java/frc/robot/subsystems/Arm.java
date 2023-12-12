@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Arm extends SubsystemBase{
     private static Arm instance = null;
     private final CANSparkMax armMotor = new CANSparkMax(Constants.Arm.MOTOR_ID, CANSparkMax.MotorType.kBrushless);
-    private static double kP = 0.012;    ;
+    private static double kP = 0.013;    ;
     private static double kI = 0.000000000;
     private static double kD = 0.0035;
     private static double kF = 0.06;
@@ -42,12 +42,17 @@ public class Arm extends SubsystemBase{
         controller.setPID(kP, kI, kD);
         currentAngle = this.getAngle();
         double feedforward = kF * Math.cos(Math.toRadians(currentAngle)); // account for gravity: tourque =  r * F * cos(theta) |  r * F is tunable kF term//feedForward.calculate(Math.toRadians(targetAngle), 6, 2);//kF * Math.abs(Math.cos(Math.toRadians(currentAngle))); // account for gravity: tourque =  r * F * cos(theta) |  r * F is tunable kF term
-        // System.out.println("l" + feedforward);
-        System.out.println("target angle: "+ targetAngle);
+        System.out.println("l" + feedforward);
+        // System.out.println("target angle: "+ targetAngle);
         // armMotor.set((controller.calculate(encoder.getPosition(), this.toTicks(targetAngle)) + feedforward) * (-Math.pow(0.95 * ((currentAngle-targetAngle)/(Math.abs(startingAngle - targetAngle))), 2) + 1)); // part being multiplied is to limit the speed of the arm early on, and let it go faster later. Scrappy slew limiter
-        armMotor.set((controller.calculate(encoder.getPosition(), this.toTicks(targetAngle)) + feedforward));
-        // System.out.println(encoder.getPosition());
-        // System.out.println(currentAngle);
+        // armMotor.set(controller.calculate(encoder.getPosition(), this.toTicks(targetAngle)) + feedforward);
+        armMotor.set(controller.calculate(encoder.getPosition(), this.toTicks(targetAngle)) + feedforward);
+        System.out.println("encoder: " + encoder.getPosition());
+        System.out.println("currentAngle: " + currentAngle);
+        System.out.println("currentTicks: " + this.toTicks(currentAngle));
+        System.out.println("targetAngle: " + targetAngle);
+        System.out.println("targetTicks: " + this.toTicks(targetAngle));
+        // System.out.println(feedforward);
         System.out.println("Speed" + (controller.calculate(encoder.getPosition(), this.toTicks(targetAngle)) + feedforward));
     }
 

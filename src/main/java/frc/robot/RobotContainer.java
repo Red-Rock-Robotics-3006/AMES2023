@@ -34,8 +34,8 @@ public class RobotContainer {
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.DRIVER_CONTROLLER_PORT);
 
-  // private EndEffector m_endEffector = EndEffector.getInstance();
-  // private Arm m_arm = Arm.getInstance();
+  private EndEffector m_endEffector = EndEffector.getInstance();
+  private Arm m_arm = Arm.getInstance();
   private Drivetrain m_swerve = Drivetrain.getInstance();
 
   private Command driveCommand = null;
@@ -112,62 +112,62 @@ public class RobotContainer {
 
 
     //alpha intake forward (press a)
-    // mechStick.a()
-    //   .onTrue(new FunctionalCommand(
-    //     () -> m_arm.setIntakeForward(), //init
-    //     () -> m_endEffector.startIntake(), //execute
-    //     (interrupted) -> m_arm.stow(), //end
-    //     () -> m_endEffector.hasBall(), //isFinished
-    //     m_arm, m_endEffector)); //requirements
+    mechStick.a()
+      .onTrue(new FunctionalCommand(
+        () -> m_arm.setIntakeForward(), //init
+        () -> m_endEffector.startIntake(), //execute
+        (interrupted) -> {if (!interrupted) m_arm.stow();}, //end
+        () -> m_endEffector.hasBall(), //isFinished
+        m_arm, m_endEffector)); //requirements
     
-    // //alpha intake rear (press a and dpad_left)
-    // mechStick.a().and(mechStick.povLeft())
-    //   .onTrue(new FunctionalCommand(
-    //     () -> m_arm.setIntakeRear(),
-    //     () -> m_endEffector.startIntake(),
-    //     (interrupted) -> m_arm.stow(), // (interrupted) -> {m_arm.stow(); m_effector.brake();},
-    //     () -> m_endEffector.hasBall(), 
-    //     m_arm, m_endEffector));
+    //alpha intake rear (press a and dpad_left)
+    mechStick.a().and(mechStick.povLeft())
+      .onTrue(new FunctionalCommand(
+        () -> m_arm.setIntakeRear(),
+        () -> m_endEffector.startIntake(),
+        (interrupted) -> {if (!interrupted) m_arm.stow();}, // (interrupted) -> {m_arm.stow(); m_effector.brake();},
+        () -> m_endEffector.hasBall(), 
+        m_arm, m_endEffector));
 
 
-    // //output angle low forward (press x)
-    // mechStick.x()
-    //   .onTrue(new InstantCommand(
-    //     () -> m_arm.setOutputForwardL(),
-    //     m_arm));
+    //output angle low forward (press x)
+    mechStick.x()
+      .onTrue(new InstantCommand(
+        () -> m_arm.setOutputForwardH(),
+        m_arm));
 
-    // //output angle low rear (press x and dpad_left)
-    // mechStick.x().and(mechStick.povLeft())
-    //   .onTrue(new InstantCommand(
-    //     () -> m_arm.setOutputRearL(),
-    //     m_arm));
+    //output angle low rear (press x and dpad_left)
+    mechStick.x().and(mechStick.povLeft())
+      .onTrue(new InstantCommand(
+        () -> m_arm.setOutputForwardL(),
+        m_arm));
 
     // mechStick.x().and(mechStick.povRight())
     //   .onTrue(new InstantCommand(
     //     () -> m_arm.setOutputForwardH(),
     //     m_arm));    
 
-    // //output angle high forward (press b)
-    // mechStick.b()
-    //   .onTrue(new InstantCommand(
-    //     () -> m_arm.setOutputForwardH(),
-    //     m_arm));
+    //output angle high forward (press b)
+    mechStick.b()
+      .onTrue(new InstantCommand(
+        () -> m_arm.setOutputForwardH(),
+        m_arm));
 
-    // //output angle high rear (press b and dpad_left)
-    // mechStick.b().and(mechStick.povLeft())
-    //   .onTrue(new InstantCommand(
-    //     () -> m_arm.setOutputRearH(),
-    //     m_arm));
+    //output angle high rear (press b and dpad_left)
+    mechStick.b().and(mechStick.povLeft())
+      .onTrue(new InstantCommand(
+        () -> m_arm.setOutputRearH(),
+        m_arm));
 
     
-    // // outtake/shoot (press right bumper)
-    // mechStick.rightBumper()
-    //   .onTrue(new StartEndCommand(
-    //     () -> m_endEffector.startOutput(),
-    //     () -> m_endEffector.brake(),
-    //     m_arm, m_endEffector
-    //   ).withTimeout(Constants.EndEffector.OUTTAKE_SECONDS)
-    //   );
+    // outtake/shoot (press right bumper)
+    mechStick.rightBumper()
+      .onTrue(new StartEndCommand(
+        () -> m_endEffector.startOutput(),
+        () -> m_endEffector.brake(),
+        m_arm, m_endEffector
+      ).withTimeout(Constants.EndEffector.OUTTAKE_SECONDS)
+      );
 
     // m_driverController.x()
     //   .onTrue(new InstantCommand(
@@ -182,9 +182,9 @@ public class RobotContainer {
     //     () -> m_arm.stop()));
       
     
-    // //default behavior to stow arm and brake intake
-    // m_endEffector.setDefaultCommand(new RunCommand(() -> m_endEffector.brake(), m_endEffector));
-    // // m_arm.setDefaultCommand(new RunCommand(() -> m_arm.stow(), m_arm));
+    //default behavior to stow arm and brake intake
+    m_endEffector.setDefaultCommand(new RunCommand(() -> m_endEffector.brake(), m_endEffector));
+    // m_arm.setDefaultCommand(new RunCommand(() -> m_arm.stow(), m_arm));
 
   }
 
